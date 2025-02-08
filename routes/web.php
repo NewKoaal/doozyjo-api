@@ -7,5 +7,9 @@ Route::get('/', function() {
     return view('transcript');
 });
 
-Route::post('/', [ProcessAudioController::class, 'postToWhisper']);
+Route::get('/test', function() {
+    return view('audinote');
+});
+
+Route::post('/', [ProcessAudioController::class, 'postToWhisper'])->name('upload.audio');
 

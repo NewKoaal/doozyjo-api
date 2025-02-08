@@ -133,25 +133,31 @@ class ProcessAudioController extends Controller
         }
         $jsonResult['created_at'] = Carbon::now()->toDateTimeString();
 
-        //dd(json_encode($jsonResult));
-
         // Return JSON result
         return response()->json([
             'success' => true,
             'transcription' => $jsonResult
         ], 200);
-
-        //self::parseAnalysis($analysis);
     }
 
     public function postToWhisper(Request $request) {
-         // Validate and upload the audio file
-         $request->validate([
-            'audio' => 'required|file|mimes:mp3,wav,m4a',
-        ]);
+        try {
+            //dd($request);
+            // Validate file input
+            /*$request->validate([
+                'audio' => 'required|file|mimes:wav,mp3,m4a,audio/wav|mimetypes:audio/wav,audio/mp3,audio/m4a,wav|max:10240', // Max 10MB file size
+            ], [
+                'audio.required' => 'Please upload an audio file.',
+                'audio.mimes' => 'Only MP3, WAV, or M4A files are allowed.',
+                'audio.max' => 'The file size must not exceed 10MB.',
+            ]);*/
 
-        $audioPath = $request->file('audio')->store('audio', 'public');
-        $audioFile = storage_path("app/public/{$audioPath}");
+            $audioPath = $request->file('audio')->store('audio', 'public');
+            $audioFile = storage_path("app/public/{$audioPath}");
+        } catch (\Exception $e) {
+            dd($e);
+            return back()->with('error', 'An error occurred while processing your request. Please try again.');
+        }
 
         try {
             $response = OpenAI::audio()->transcribe([
@@ -254,9 +260,7 @@ class ProcessAudioController extends Controller
         }
         $jsonResult['created_at'] = Carbon::now()->toDateTimeString();
 
-        //dd(json_encode($jsonResult));
-
         // Return JSON result
-        return view('transcript', compact('jsonResult'));
+        return response()->json(['success' => true, 'data' => $jsonResult]);
     }
 }
