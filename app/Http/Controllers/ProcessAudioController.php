@@ -214,14 +214,8 @@ class ProcessAudioController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
 
-        self::parseAnalysis($analysis);
-        //return response()->json(['transcription' => $analysis]);
-    }
-
-    public function parseAnalysis($rawAnalysis)
-    {
         // Split raw analysis by the "END TAG"
-        $parts = explode("END TAG", $rawAnalysis);
+        $parts = explode("END TAG", $analysis);
         $parsedData = trim($parts[0]);
 
         $jsonResult = [];
@@ -263,9 +257,6 @@ class ProcessAudioController extends Controller
         //dd(json_encode($jsonResult));
 
         // Return JSON result
-        return response()->json([
-            'success' => true,
-            'transcription' => $jsonResult
-        ], 200);
+        return view('transcript', compact('jsonResult'));
     }
 }
