@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AudioModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use OpenAI\Laravel\Facades\OpenAI;
@@ -133,6 +134,8 @@ class ProcessAudioController extends Controller
         }
         $jsonResult['created_at'] = Carbon::now()->toDateTimeString();
 
+        AudioModel::insertTranscript($jsonResult, $transcription, $analysis);
+
         // Return JSON result
         return response()->json([
             'success' => true,
@@ -259,6 +262,8 @@ class ProcessAudioController extends Controller
             ];
         }
         $jsonResult['created_at'] = Carbon::now()->toDateTimeString();
+
+        AudioModel::insertTranscript($jsonResult, $transcription, $analysis);
 
         // Return JSON result
         return response()->json(['success' => true, 'data' => $jsonResult]);
