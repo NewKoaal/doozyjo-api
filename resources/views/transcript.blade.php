@@ -53,6 +53,27 @@
             <p><strong>Content:</strong> {{ $jsonResult['call']['content'] }}</p>
         @endif
 
+        {{-- Question Section --}}
+        @if(isset($jsonResult['question']))
+            <h2>Question</h2>
+            <p><strong>Question:</strong> {{ $jsonResult['question']['question'] }}</p>
+            <p><strong>Answer:</strong> {{ $jsonResult['question']['answer'] }}</p>
+        @endif
+
+        {{-- Completion Section --}}
+        @if(isset($jsonResult['completion']))
+            <h2>Completion</h2>
+            <p><strong>Task:</strong> {{ $jsonResult['completion']['task'] }}</p>
+            <p><strong>Date:</strong> {{ $jsonResult['completion']['date'] }}</p>
+        @endif
+
+        {{-- Completion Section --}}
+        @if(isset($jsonResult['cancellation']))
+            <h2>Cancellation</h2>
+            <p><strong>Title:</strong> {{ $jsonResult['cancellation']['title'] }}</p>
+            <p><strong>Date:</strong> {{ $jsonResult['cancellation']['date'] }}</p>
+        @endif
+
         {{-- Summary Section --}}
         @if(isset($jsonResult['summary']))
             <h2>Summary</h2>
@@ -156,14 +177,32 @@
 
                         ${data.data.note ? `
                             <h2>Note</h2>
-                            <p><strong>Title:</strong> ${data.data.summary.title}</p>
-                            <p><strong>Content:</strong> ${data.data.summary.content}</p>
+                            <p><strong>Title:</strong> ${data.data.note.title}</p>
+                            <p><strong>Content:</strong> ${data.data.note.content}</p>
                         ` : ''}
 
                         ${data.data.call ? `
                             <h2>Call</h2>
-                            <p><strong>To:</strong> ${data.data.summary.to}</p>
-                            <p><strong>Content:</strong> ${data.data.summary.content}</p>
+                            <p><strong>To:</strong> ${data.data.call.to}</p>
+                            <p><strong>Content:</strong> ${data.data.call.content}</p>
+                        ` : ''}
+
+                        ${data.data.question ? `
+                            <h2>Question</h2>
+                            <p><strong>Question:</strong> ${data.data.question.question}</p>
+                            <p><strong>Answer:</strong> ${data.data.question.answer}</p>
+                        ` : ''}
+
+                        ${data.data.completion ? `
+                            <h2>Completion</h2>
+                            <p><strong>Task:</strong> ${data.data.completion.task}</p>
+                            <p><strong>Date:</strong> ${data.data.completion.date}</p>
+                        ` : ''}
+
+                        ${data.data.cancellation ? `
+                            <h2>Cancellation</h2>
+                            <p><strong>Title:</strong> ${data.data.cancellation.title}</p>
+                            <p><strong>Date:</strong> ${data.data.cancellation.date}</p>
                         ` : ''}
 
                         ${data.data.summary ? `
